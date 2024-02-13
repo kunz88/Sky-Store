@@ -11,20 +11,29 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // servizio per la connessione al database per più informazioni visita framework Entity
-builder.Services.AddDbContext<StoreContext>(opt => {
+builder.Services.AddDbContext<StoreContext>(opt =>
+{
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+// pre permetterci di inviare richieste dal nostro client
+builder.Services.AddCors();
 
 // costruttore applicazione
 var app = builder.Build();
 
 // Configure the HTTP request pipeline. cosa accade fra la richiesta http e la risposta,utile per aggiungere middleware
-// vi troviamo tutti i nostri middleware:
+// vi troviamo tutti i nostri middleware: importante ricordare che qui è molto importante l'ordine in cui viene inserito ogni singolo mid
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//settiamo il middleware per ricevere chiamate dal nostro client 
+// react in strict mode ha bisogno di due chiamate per sicurezza e senza questo mid non potremmo effettuare chiamate dal client
+app.UseCors(opt =>
+{
+    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"); // autorizziamo gli headers e i verbi che provengono dal nostro client
+});
 
 //app.UseHttpsRedirection(); da utilizzare solo in produzione, al momento non utilizziamo https
 app.UseAuthorization();
@@ -43,7 +52,7 @@ try
 }
 catch (Exception ex)
 {
-    logger.LogError(ex,"A problem occurred during migration");// logghiamo l'errore in caso di problemi nella creazione del database per il testing
+    logger.LogError(ex, "A problem occurred during migration");// logghiamo l'errore in caso di problemi nella creazione del database per il testing
 }
 
 // avvio l'app
