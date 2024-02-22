@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// più o meno come importare i pacchetti in node:
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -33,6 +32,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors(opt =>
 {
     opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"); // autorizziamo gli headers e i verbi che provengono dal nostro client
+    // senza questo non riusciremo a fetchare dal client
 });
 
 //app.UseHttpsRedirection(); da utilizzare solo in produzione, al momento non utilizziamo https

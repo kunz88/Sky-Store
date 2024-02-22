@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
-import { Product } from "./product"
+import { Product } from "../models/product"
+import Catalog from "../../features/catalog/Catalog";
+import Header from "./Header";
+import { Container, CssBaseline } from "@mui/material";
 
 
 
@@ -10,10 +13,10 @@ const App = () => {
   // 2---useEffect viene utilizzato tutte le volte che dobbiamo fare una chiamata esterna alla nostra app client (es.fetch api)
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/products')
+    fetch('http://localhost:5000/API/products')
       .then(response => response.json())
       .then(data => setProducts(data))
-  }, [])// è molto importante passare un secondo parametro [], la nostra dependencies, altrimenti la callback verrà chiamata innumerevoli volte, andando in loop
+  }, []);// è molto importante passare un secondo parametro [] (empty dep), la nostra dependencies, altrimenti la callback verrà chiamata innumerevoli volte, andando in loop
 
 
   const addProduct = () => { // prevState si riferisce allo stato precedente della variabile products
@@ -33,16 +36,16 @@ const App = () => {
 
   return (
 
+    //passiamo products e addProduct al componente figlio com props
+    <>
+      <CssBaseline /> {/* permette di togliere il padding iniziale della pagina */}
+      <Header />
+      <Container>
+        < Catalog products={products} addProduct={addProduct} />
+      </Container>
 
-    <div>
-      <h1>Re-store</h1>
-      <ul>
-        {products.map((product) => ( /* renderizziamo la lista di tutti i prodotti dinamicamente */
-          <li key={product.id}> {product.name} - {product.price} </li>
-        ))}
-      </ul>
-      <button onClick={addProduct}> Add product </button>
-    </div>
+
+    </>
 
 
   )
