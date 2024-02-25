@@ -16,7 +16,7 @@ const Header = ({darkMode,handleThemeChange}:Props) => {
                 <Typography variant="h6">{/* utilizzaiamo Typography per stilizzare il font del nostro h6 */ }
                     RE-STORE
                 </Typography>
-                <Switch checked={darkMode} defaultChecked onChange={handleThemeChange} /> {/* uso i parametri nel bottone switch */}
+                <Switch checked={darkMode} onChange={handleThemeChange} /> {/* uso i parametri nel bottone switch */}
             </Toolbar>
             
         </AppBar>
