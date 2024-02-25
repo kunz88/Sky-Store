@@ -37,6 +37,7 @@ app.UseCors(opt =>
 
 //app.UseHttpsRedirection(); da utilizzare solo in produzione, al momento non utilizziamo https
 app.UseAuthorization();
+
 // simile al dispensatore in express , da rivedere con più attenzione
 app.MapControllers();
 

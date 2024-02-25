@@ -9,7 +9,7 @@ namespace API.Controllers
     [Route("api/[controller]")] // route dell'API products
     public class ProductsController : ControllerBase // estendiamo una classe controller base ereditandone il formato e i membri
     {
-        private readonly StoreContext _context; // creo una variabile privata di tipo StoreContext(il nostro schema del database)
+        private readonly StoreContext _context; // creo una variabile privata di tipo StoreContext(la nostra sessione col  database)
         public ProductsController(StoreContext context) // costruttore
         {
             _context = context;// dopo averla costruita la userò per interrogare il database, essa infatti rappresenta l'istanza del database
@@ -28,5 +28,6 @@ namespace API.Controllers
         public async Task<ActionResult<Product>> GetProduct(int id){ // action result di un solo prodotto di dipo product
             return await _context.Products.FindAsync(id);
         }
+        
     }
 }

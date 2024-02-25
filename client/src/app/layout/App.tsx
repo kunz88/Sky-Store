@@ -1,51 +1,42 @@
-import { useEffect, useState } from "react"
-import { Product } from "../models/product"
+
+import { useState } from "react";
 import Catalog from "../../features/catalog/Catalog";
 import Header from "./Header";
-import { Container, CssBaseline } from "@mui/material";
+import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 
 
 
 const App = () => {
+
+
   // 1---useState utilizzo:
-  const [products, setProducts] = useState<Product[]>([]);
+  // usiamo lo state per switchare il theme a dark
+  const [darkMode,setdarkMode] = useState(false) // setto lo stato a false per iniziare il tema light
+  const palette = darkMode ? 'dark' : 'light' // uso una variabile per storare il thema
+  const theme = createTheme({ // creo un theme per il darkmode
+    palette: {
+      mode: palette, // setto la moda
+      background:{ // setto il colore in background
+        default:'#eaeaea'
+      }
+    }
 
-  // 2---useEffect viene utilizzato tutte le volte che dobbiamo fare una chiamata esterna alla nostra app client (es.fetch api)
-
-  useEffect(() => {
-    fetch('http://localhost:5000/API/products')
-      .then(response => response.json())
-      .then(data => setProducts(data))
-  }, []);// è molto importante passare un secondo parametro [] (empty dep), la nostra dependencies, altrimenti la callback verrà chiamata innumerevoli volte, andando in loop
-
-
-  const addProduct = () => { // prevState si riferisce allo stato precedente della variabile products
-    setProducts(prevState => [...prevState,
-    {
-      id: prevState.length + 101,
-      name: 'product' + (prevState.length + 1),
-      price: (prevState.length * 100),
-      description: "some description",
-      pictureUrl: 'http://picsum.photos/200',
-      brand: "some brand"
-
-    }]) // usiamo il setState per aggiungere un prodotto , useremo poi la funzione per
-    // aggiungere prodotti dinamicamente tramite un bottone "add product"che utilizza onClick 
-
+  })
+  const handleThemeChange = () =>{ // utilizzo un handler per gestire il cambio di stato
+    setdarkMode(!darkMode);
   }
-
   return (
 
-    //passiamo products e addProduct al componente figlio com props
-    <>
+    //lo passo all'interno del theme provider
+    <ThemeProvider theme={theme}>
       <CssBaseline /> {/* permette di togliere il padding iniziale della pagina */}
-      <Header />
+      <Header darkMode={darkMode} handleThemeChange={handleThemeChange}/> {/* passo lo stato e l'handler come props' */}
       <Container>
-        < Catalog products={products} addProduct={addProduct} />
+        < Catalog />
       </Container>
 
 
-    </>
+    </ThemeProvider>
 
 
   )
