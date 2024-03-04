@@ -7,8 +7,11 @@ import AboutPage from "../../features/about/AboutPage";
 import Catalog from "../../features/catalog/Catalog";
 import ProductDetails from "../../features/catalog/ProductDetails";
 import ContactPage from "../../features/contact/ContactPage";
+import BasketPage from "../../features/basket/BasketPage";
 
 
+
+// CREAIAMO UN ROUTER CON TUTTE LE ROTTE DA INSTRADARE
 
 export const router = createBrowserRouter([
     {
@@ -30,9 +33,14 @@ export const router = createBrowserRouter([
             {
                 path: 'catalog/:id',
                 element: <ProductDetails />
-            }, {
+            }, 
+            {
                 path: 'contact',
                 element: <ContactPage />
+            },
+            {
+                path: 'basket',
+                element: <BasketPage />
             },
 
         ]

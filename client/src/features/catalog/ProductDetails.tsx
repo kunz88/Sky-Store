@@ -1,8 +1,9 @@
 import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material"
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { Product } from "../../app/models/product";
+import agent from "../../app/api/agent";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 // adesso utilizzeremo questo componente per renderizzare la pagina dettaglio di ogni prodotto
 
 const ProductDetails = () => {
@@ -14,8 +15,8 @@ const ProductDetails = () => {
 
     // avremo bisogno di una chiamata la nostro server utilizzando axios e useEffect
     useEffect(() => {
-        axios.get(`http://localhost:5000/API/products/${id}`)
-            .then((response) => setProduct(response.data)) // settiamo il prodotto prendendola dalla risposta del server
+        id && agent.Catalog.details(parseInt(id)) // essendo l'id possibilmente null potremmo avere un errore
+            .then((response) => setProduct(response)) // settiamo il prodotto prendendola dalla risposta del server
             .catch(error => console.log(error))
             .finally(() => setLoading(false)) // setto il loading a false, la nostra chiamata remota è finita
 
@@ -23,7 +24,7 @@ const ProductDetails = () => {
     // in questo caso useEffect viene chiamato quando il componente viene montato o quando
     // l'id ( parametro di dipendenza) cambio
 
-    if (loading) { return <h3>loading ...</h3> }
+    if (loading) return <LoadingComponent/>
     if (!product) { return <h3>Product not found</h3> }
     return (
         <Grid container spacing={6}>

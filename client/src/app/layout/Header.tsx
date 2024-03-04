@@ -2,7 +2,7 @@ import { ShoppingCart } from '@mui/icons-material'
 import { Badge, Box, IconButton, List, ListItem, Switch } from '@mui/material'
 // questo componente lo utilizzeremo per la nostra appBar
 import { AppBar, Toolbar, Typography } from "@mui/material" // componenti di material che ci servono per l'appBar
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 // array per i links da utilizare come routes
 const midLinks = [
@@ -67,11 +67,14 @@ const Header = ({ darkMode, handleThemeChange }: Props) => {
 
                 <Box display="flex" alignItems="center">
 
-                    <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
+                    <IconButton component={Link} to="/basket" size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
                         <Badge badgeContent="4" color="secondary">
                             <ShoppingCart />
                         </Badge>
                     </IconButton>
+
+
+                    
                     <List sx={{ display: "flex" }}>
                         {rightLinks.map(({ title, path }) => {
                             return <ListItem
