@@ -3,23 +3,36 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// -- PRIMA SEZIONE DEOENDENCY INJECTION
+
+
 // Add services to the container.
 builder.Services.AddControllers();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // servizio per la connessione al database per più informazioni visita framework Entity
+// aggiungiamo il context come servizio alla nostra app
 builder.Services.AddDbContext<StoreContext>(opt =>
-{
+{   // passiamo delle opzioni , in questo caso usiamo sqlite
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+
+
 // pre permetterci di inviare richieste dal nostro client
 builder.Services.AddCors();
 
 // costruttore applicazione
 var app = builder.Build();
 
+
+
+// SECONDA SEZIONE MIDDLEWARE
 // Configure the HTTP request pipeline. cosa accade fra la richiesta http e la risposta,utile per aggiungere middleware
 // vi troviamo tutti i nostri middleware: importante ricordare che qui è molto importante l'ordine in cui viene inserito ogni singolo mid
 if (app.Environment.IsDevelopment())
@@ -31,8 +44,10 @@ if (app.Environment.IsDevelopment())
 // react in strict mode ha bisogno di due chiamate per sicurezza e senza questo mid non potremmo effettuare chiamate dal client
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"); // autorizziamo gli headers e i verbi che provengono dal nostro client
+    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000"); // autorizziamo gli headers e i verbi che provengono dal nostro client
     // senza questo non riusciremo a fetchare dal client
+    //AllowCredentials() permette l'utilizzo di cookis in un dominio differente
+
 });
 
 //app.UseHttpsRedirection(); da utilizzare solo in produzione, al momento non utilizziamo https

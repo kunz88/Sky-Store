@@ -1,7 +1,8 @@
 namespace API.Entities
 {
     public class Product
-    {// propietà devono essere settate come publiche perché il framework entity dovrà cercarlo all'interno della classe
+    {// propietà devono essere settate come publiche perché il framework entity 
+    //dovrà cercarlo all'interno della classe
 
         public int Id { get; set; }
         public string Name { get; set; }

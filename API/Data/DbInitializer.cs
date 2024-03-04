@@ -6,7 +6,7 @@ namespace API.Data
     public static class DbInitializer // essendo statica possiamo utilizzarla senza instanziarla
     {
         public static void Initialize(StoreContext context)
-        {
+        {        
             if (context.Products.Any()) return; // se esistono gia dei prodotti ignora il codice sotto e return
             var products = new List<Product>{// creo una lista di prodotti random
                 new Product

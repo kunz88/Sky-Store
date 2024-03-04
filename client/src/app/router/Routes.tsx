@@ -37,4 +37,4 @@ export const router = createBrowserRouter([
 
         ]
     }
-]) // il nostro costruttore del router rende come argomento un array di routes 
+]) // il nostro costruttore del router prende come argomento un array di routes 
